@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+  <Identity
+    Name="519Ezhik.mpvUnofficial"
+    Publisher="CN=F7C8DA8A-6CF5-4B76-92AA-65A6A8B43898"
+    Version="0.33.1.0" />
+
+  <Properties>
+    <DisplayName>mpv (Unofficial)</DisplayName>
+    <PublisherDisplayName>Ezhik</PublisherDisplayName>
+    <Logo>Images\icon.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="$targetentrypoint$"
+	  uap10:SupportsMultipleInstances="true"
+	 >
+      <uap:VisualElements
+        DisplayName="mpv"
+        Description="mpv media player"
+        BackgroundColor="transparent"
+        Square44x44Logo="Images\Square44x44Logo.png" Square150x150Logo="Images\Square150x150Logo.png">
+        <uap:SplashScreen Image="Images\SplashScreen.png" />
+        <uap:DefaultTile Square71x71Logo="Images\SmallTile.png" Wide310x150Logo="Images\Wide310x150Logo.png" Square310x310Logo="Images\LargeTile.png" ShortName="mpv">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:LockScreen BadgeLogo="Images\BadgeLogo.png" Notification="badge"/>
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="file_types">
+		    <uap:Logo>Images\document\document.png</uap:Logo>
+            <uap:SupportedFileTypes>
+				<uap:FileType>.ac3</uap:FileType>
+				<uap:FileType>.a52</uap:FileType>
+				<uap:FileType>.eac3</uap:FileType>
+				<uap:FileType>.mlp</uap:FileType>
+				<uap:FileType>.dts</uap:FileType>
+				<uap:FileType>.dts-hd</uap:FileType>
+				<uap:FileType>.dtshd</uap:FileType>
+				<uap:FileType>.true-hd</uap:FileType>
+				<uap:FileType>.thd</uap:FileType>
+				<uap:FileType>.truehd</uap:FileType>
+				<uap:FileType>.thd+ac3</uap:FileType>
+				<uap:FileType>.tta</uap:FileType>
+				<uap:FileType>.pcm</uap:FileType>
+				<uap:FileType>.wav</uap:FileType>
+				<uap:FileType>.aiff</uap:FileType>
+				<uap:FileType>.aif</uap:FileType>
+				<uap:FileType>.aifc</uap:FileType>
+				<uap:FileType>.amr</uap:FileType>
+				<uap:FileType>.awb</uap:FileType>
+				<uap:FileType>.au</uap:FileType>
+				<uap:FileType>.snd</uap:FileType>
+				<uap:FileType>.lpcm</uap:FileType>
+				<uap:FileType>.yuv</uap:FileType>
+				<uap:FileType>.y4m</uap:FileType>
+				<uap:FileType>.ape</uap:FileType>
+				<uap:FileType>.wv</uap:FileType>
+				<uap:FileType>.shn</uap:FileType>
+				<uap:FileType>.m2ts</uap:FileType>
+				<uap:FileType>.m2t</uap:FileType>
+				<uap:FileType>.mts</uap:FileType>
+				<uap:FileType>.mtv</uap:FileType>
+				<uap:FileType>.ts</uap:FileType>
+				<uap:FileType>.tsv</uap:FileType>
+				<uap:FileType>.tsa</uap:FileType>
+				<uap:FileType>.tts</uap:FileType>
+				<uap:FileType>.trp</uap:FileType>
+				<uap:FileType>.adts</uap:FileType>
+				<uap:FileType>.adt</uap:FileType>
+				<uap:FileType>.mpa</uap:FileType>
+				<uap:FileType>.m1a</uap:FileType>
+				<uap:FileType>.m2a</uap:FileType>
+				<uap:FileType>.mp1</uap:FileType>
+				<uap:FileType>.mp2</uap:FileType>
+				<uap:FileType>.mp3</uap:FileType>
+				<uap:FileType>.mpeg</uap:FileType>
+				<uap:FileType>.mpg</uap:FileType>
+				<uap:FileType>.mpe</uap:FileType>
+				<uap:FileType>.mpeg2</uap:FileType>
+				<uap:FileType>.m1v</uap:FileType>
+				<uap:FileType>.m2v</uap:FileType>
+				<uap:FileType>.mp2v</uap:FileType>
+				<uap:FileType>.mpv</uap:FileType>
+				<uap:FileType>.mpv2</uap:FileType>
+				<uap:FileType>.mod</uap:FileType>
+				<uap:FileType>.tod</uap:FileType>
+				<uap:FileType>.vob</uap:FileType>
+				<uap:FileType>.vro</uap:FileType>
+				<uap:FileType>.evob</uap:FileType>
+				<uap:FileType>.evo</uap:FileType>
+				<uap:FileType>.mpeg4</uap:FileType>
+				<uap:FileType>.m4v</uap:FileType>
+				<uap:FileType>.mp4</uap:FileType>
+				<uap:FileType>.mp4v</uap:FileType>
+				<uap:FileType>.mpg4</uap:FileType>
+				<uap:FileType>.m4a</uap:FileType>
+				<uap:FileType>.aac</uap:FileType>
+				<uap:FileType>.h264</uap:FileType>
+				<uap:FileType>.avc</uap:FileType>
+				<uap:FileType>.x264</uap:FileType>
+				<uap:FileType>.264</uap:FileType>
+				<uap:FileType>.hevc</uap:FileType>
+				<uap:FileType>.h265</uap:FileType>
+				<uap:FileType>.x265</uap:FileType>
+				<uap:FileType>.265</uap:FileType>
+				<uap:FileType>.flac</uap:FileType>
+				<uap:FileType>.oga</uap:FileType>
+				<uap:FileType>.ogg</uap:FileType>
+				<uap:FileType>.opus</uap:FileType>
+				<uap:FileType>.spx</uap:FileType>
+				<uap:FileType>.ogv</uap:FileType>
+				<uap:FileType>.ogm</uap:FileType>
+				<uap:FileType>.ogx</uap:FileType>
+				<uap:FileType>.mkv</uap:FileType>
+				<uap:FileType>.mk3d</uap:FileType>
+				<uap:FileType>.mka</uap:FileType>
+				<uap:FileType>.webm</uap:FileType>
+				<uap:FileType>.weba</uap:FileType>
+				<uap:FileType>.avi</uap:FileType>
+				<uap:FileType>.vfw</uap:FileType>
+				<uap:FileType>.divx</uap:FileType>
+				<uap:FileType>.3iv</uap:FileType>
+				<uap:FileType>.xvid</uap:FileType>
+				<uap:FileType>.nut</uap:FileType>
+				<uap:FileType>.flic</uap:FileType>
+				<uap:FileType>.fli</uap:FileType>
+				<uap:FileType>.flc</uap:FileType>
+				<uap:FileType>.nsv</uap:FileType>
+				<uap:FileType>.gxf</uap:FileType>
+				<uap:FileType>.mxf</uap:FileType>
+				<uap:FileType>.wma</uap:FileType>
+				<uap:FileType>.wm</uap:FileType>
+				<uap:FileType>.wmv</uap:FileType>
+				<uap:FileType>.asf</uap:FileType>
+				<uap:FileType>.dvr-ms</uap:FileType>
+				<uap:FileType>.dvr</uap:FileType>
+				<uap:FileType>.wtv</uap:FileType>
+				<uap:FileType>.dv</uap:FileType>
+				<uap:FileType>.hdv</uap:FileType>
+				<uap:FileType>.flv</uap:FileType>
+				<uap:FileType>.f4v</uap:FileType>
+				<uap:FileType>.f4a</uap:FileType>
+				<uap:FileType>.qt</uap:FileType>
+				<uap:FileType>.mov</uap:FileType>
+				<uap:FileType>.hdmov</uap:FileType>
+				<uap:FileType>.rm</uap:FileType>
+				<uap:FileType>.rmvb</uap:FileType>
+				<uap:FileType>.ra</uap:FileType>
+				<uap:FileType>.ram</uap:FileType>
+				<uap:FileType>.3ga</uap:FileType>
+				<uap:FileType>.3ga2</uap:FileType>
+				<uap:FileType>.3gpp</uap:FileType>
+				<uap:FileType>.3gp</uap:FileType>
+				<uap:FileType>.3gp2</uap:FileType>
+				<uap:FileType>.3g2</uap:FileType>
+				<uap:FileType>.ay</uap:FileType>
+				<uap:FileType>.gbs</uap:FileType>
+				<uap:FileType>.gym</uap:FileType>
+				<uap:FileType>.hes</uap:FileType>
+				<uap:FileType>.kss</uap:FileType>
+				<uap:FileType>.nsf</uap:FileType>
+				<uap:FileType>.nsfe</uap:FileType>
+				<uap:FileType>.sap</uap:FileType>
+				<uap:FileType>.spc</uap:FileType>
+				<uap:FileType>.vgm</uap:FileType>
+				<uap:FileType>.vgz</uap:FileType>
+				<uap:FileType>.m3u</uap:FileType>
+				<uap:FileType>.m3u8</uap:FileType>
+				<uap:FileType>.pls</uap:FileType>
+				<uap:FileType>.cue</uap:FileType>
+            </uap:SupportedFileTypes>
+		    <uap2:SupportedVerbs>
+				<uap3:Verb Id="Open" MultiSelectModel="Player">Play</uap3:Verb>			  
+				<uap3:Verb Id="NewWindow" MultiSelectModel="Player" Extended="true">Play in New Window</uap3:Verb>			  
+		    </uap2:SupportedVerbs>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+		  <uap5:Extension Category="windows.appExecutionAlias" Executable="mpv/mpv-console-launcher.exe" EntryPoint="main">
+			  <uap5:AppExecutionAlias uap10:Subsystem="console">
+				  <uap5:ExecutionAlias Alias="mpv.exe" />
+			  </uap5:AppExecutionAlias>
+		  </uap5:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+	  <rescap:Capability Name="runFullTrust" />
+	  <Capability Name="internetClient"/>
+  </Capabilities>
+</Package>
