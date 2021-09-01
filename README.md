@@ -6,6 +6,8 @@ mpv website: https://mpv.io
 
 mpv GitHub repository: https://github.com/mpv-player/mpv
 
+mpv-msix on the Microsoft Store: https://www.microsoft.com/store/productId/9P3JFR0CLLL6
+
 # mpv-launcher
 
 mpv-launcher is a wrapper for mpv which implements single instance mode - if you have mpv open, opening a new file will reuse the existing window. It also implements support for multiple selection, so if you select 10 videos in File Explorer and click "Play", only a single mpv window will open.
