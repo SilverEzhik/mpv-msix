@@ -1,6 +1,6 @@
 # mpv-msix
 
-mpv packaged for Windows 10. Usable with unmodified Windows mpv builds. Currently only compatible with x64.
+mpv packaged for Windows 10. Usable with unmodified Windows mpv builds. Currently only compatible with x64 and x86.
 
 mpv website: https://mpv.io
 
@@ -22,9 +22,8 @@ Single instance mode can be bypassed by:
 
 # mpv project
 
-mpv is mostly a dummy project for packaging existing mpv releases. By putting mpv.exe and relevant files in `mpv\prebuilt\x64`, the files will be automatically included in the package.
+mpv is mostly a dummy project for packaging existing mpv releases. By putting mpv.exe and relevant files in `mpv\prebuilt\x64` and `mpv\prebuilt\x86`, the files will be automatically included in the package.
 
 ## mpv-console-launcher
 
 `mpv-console-launcher` is a slightly modified version of `mpv.com` which is hardcoded to look for the mpv executable which ships with the package. This is necessary because App Execution Alias functionality in MSIX packages requires every executable to be a .exe file. 
-

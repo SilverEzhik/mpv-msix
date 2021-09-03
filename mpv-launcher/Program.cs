@@ -17,10 +17,8 @@ using Windows.UI.StartScreen;
 
 namespace mpv_launcher
 {
-    static class Program
+    class Mpv
     {
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        private static extern int StrCmpLogicalW(string a, string b);
         [DllImport("user32.dll")]
         private static extern IntPtr SetForegroundWindow(IntPtr hWnd);
         [DllImport("user32.dll")]
@@ -28,57 +26,98 @@ namespace mpv_launcher
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, IntPtr nCmdShow);
 
-        private static string mpvExe = Path.Combine(Package.Current.InstalledLocation.Path, "mpv", "mpv.exe");
-        private static string mpvPipe = "mpv-launcher-pipe";
-        private static string mpvPipePath = @"\\.\pipe\mpv-launcher-pipe";
-
-        // write to mpv stream in utf-8
-        static void WriteString(string outString, Stream ioStream)
+        Utf8JsonWriter Writer;
+        NamedPipeClientStream Pipe;
+        StreamReader Reader;
+        public Mpv(NamedPipeClientStream pipe)
         {
-            byte[] outBuffer = Encoding.UTF8.GetBytes(outString + "\n");
-            int len = outBuffer.Length;
-            ioStream.Write(outBuffer, 0, len);
-            ioStream.Flush();
+            Pipe = pipe;
+            Writer = new Utf8JsonWriter(pipe, new JsonWriterOptions { Indented = false, SkipValidation = true }) ;
+            Reader = new StreamReader(pipe);
         }
 
-        // load file into mpv
-        static void MpvLoadFile(string file, bool append, NamedPipeClientStream pipe)
+        JsonDocument GetResponse(int id)
         {
-            var command = append ? "append" : "replace";
-            WriteString("loadfile \"" + file.Replace("\\", "\\\\") + "\" " + command + "\n", pipe);
-        }
-
-        // activate mpv window
-        static void MpvActivate(NamedPipeClientStream pipe)
-        {
-            // generate a random id for our request
-            int property_id = new Random().Next();
-            // request the pid via ipc
-            WriteString($"{{ \"command\": [\"get_property\", \"pid\"], \"request_id\": {property_id} }}", pipe);
-
-            // read until we find the response
-            var reader = new StreamReader(pipe);
-            while (!reader.EndOfStream)
+            while (!Reader.EndOfStream)
             {
-                var json = JsonDocument.Parse(reader.ReadLine());
-                if (json.RootElement.TryGetProperty("request_id", out JsonElement outId) && outId.GetInt64() == property_id)
+                var line = Reader.ReadLine();
+                var json = JsonDocument.Parse(line);
+                if (json.RootElement.TryGetProperty("request_id", out JsonElement outId) && outId.GetInt64() == id)
                 {
-                    // get the main window of pid
-                    int pid = json.RootElement.GetProperty("data").GetInt32();
-                    var hwnd = Process.GetProcessById(pid).MainWindowHandle;
-
-                    // show window
-                    SetForegroundWindow(hwnd);
-                    // unminimize
-                    if (IsIconic(hwnd))
-                    {
-                        ShowWindow(hwnd, new IntPtr(9));
-                    }
-
-                    return;
+                    return json;
                 }
             }
+            return null;
         }
+
+        int SendCommand(params string[] args)
+        {
+            int id = new Random().Next();
+
+            //MemoryStream w = new MemoryStream();
+            //Writer.Reset(w);
+            Writer.WriteStartObject();
+
+            Writer.WriteStartArray("command");
+            foreach (var arg in args)
+            {
+                Writer.WriteStringValue(arg);
+            }
+            Writer.WriteEndArray();
+
+            Writer.WriteNumber("request_id", id);
+            Writer.WriteEndObject();
+            Writer.Flush();
+            Pipe.WriteByte((byte)'\n');
+            Pipe.Flush();
+            Writer.Reset();
+
+            return id;
+        }
+
+        public void LoadFile(string file, bool append)
+        {
+            SendCommand("loadfile", file, append ? "append" : "replace");
+        }
+        public void LoadFiles(string[] files)
+        {
+            var append = false;
+            foreach (var file in files)
+            {
+                LoadFile(file, append);
+                append = true;
+            }
+        }
+
+        public int GetPid()
+        {
+            int id = SendCommand("get_property", "pid");
+            var json = GetResponse(id);
+
+            // get the main window of pid
+            return json.RootElement.GetProperty("data").GetInt32();
+        }
+
+        public void Activate()
+        {
+            int pid = GetPid();
+            var hwnd = Process.GetProcessById(pid).MainWindowHandle;
+
+            // show window
+            SetForegroundWindow(hwnd);
+            // unminimize
+            if (IsIconic(hwnd))
+            {
+                ShowWindow(hwnd, new IntPtr(9));
+            }
+
+            return;
+        }
+    }
+    static class Program
+    {
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern int StrCmpLogicalW(string a, string b);
 
         // add new window button to jumplist
         async static Task SetupJumpList()
@@ -87,12 +126,19 @@ namespace mpv_launcher
 
             if (jumpList.Items.Count == 0)
             {
-                var item = JumpListItem.CreateWithArguments("--new-window", "New Window");
-                item.Logo = new Uri("ms-appx:///Images/icon/icon.png");
-                jumpList.Items.Add(item);
+                var newWindowItem = JumpListItem.CreateWithArguments("--new-window", "New Window");
+                newWindowItem.Logo = new Uri("ms-appx:///Images/icon/icon.png");
+                jumpList.Items.Add(newWindowItem);
+                var settingsItem = JumpListItem.CreateWithArguments("--settings", "Settings");
+                settingsItem.Logo = new Uri("ms-appx:///Images/settings/icon.png");
+                jumpList.Items.Add(settingsItem);
                 await jumpList.SaveAsync();
             }
         }
+
+        public static string mpvExe = Path.Combine(Package.Current.InstalledLocation.Path, "mpv", "mpv.exe");
+        public static string mpvPipe = "mpv-launcher-pipe";
+        public static string mpvPipePath = @"\\.\pipe\mpv-launcher-pipe";
 
         /// <summary>
         ///  The main entry point for the application.
@@ -109,27 +155,43 @@ namespace mpv_launcher
             {
                 Process.Start(mpvExe);
                 return;
-            } 
+            }
+
+            // sort because of explorer.exe weirdness
+            // TODO: make this an option
+            Array.Sort(args, StrCmpLogicalW);
 
             // launch selection in new window
-            var eventArgs = AppInstance.GetActivatedEventArgs();
-            if (eventArgs.Kind == ActivationKind.File && ((FileActivatedEventArgs)eventArgs).Verb == "NewWindow")
+            bool newWindow = true;
+            try
             {
-                Array.Sort(args, StrCmpLogicalW);
-                var mpv = new Process();
-                mpv.StartInfo.FileName = mpvExe;
+                var eventArgs = AppInstance.GetActivatedEventArgs();
+                newWindow = eventArgs.Kind == ActivationKind.File && ((FileActivatedEventArgs)eventArgs).Verb == "NewWindow";
+            }
+            catch (COMException)
+            {
+                // GetActivatedEventArgs() appears to fail when mpv is invoked while also changing the default file association.
+                // this means we can't tell what verb was used to start mpv-launcher, so let's fall back to the safer option and open a new window
+                newWindow = true;
+            }
+
+            if (newWindow)
+            {
+                var mpvProcess = new Process();
+                mpvProcess.StartInfo.FileName = mpvExe;
                 foreach (var arg in args)
                 {
-                    mpv.StartInfo.ArgumentList.Add(arg);
+                    mpvProcess.StartInfo.ArgumentList.Add(arg);
                 }
-                mpv.Start();
+                mpvProcess.Start();
                 return;
             }
+
 
             // start mpv
             if (!File.Exists(mpvPipePath))
             {
-                try 
+                try
                 {
                     Process.Start(mpvExe, $"--input-ipc-server={mpvPipePath}");
                 }
@@ -140,23 +202,16 @@ namespace mpv_launcher
                 }
             }
 
-            // sort because of explorer.exe weirdness
-            Array.Sort(args, StrCmpLogicalW);
-
             // connect to pipe
             var pipe = new NamedPipeClientStream(mpvPipe);
             pipe.Connect();
+            var mpv = new Mpv(pipe);
 
             // replace all media
-            var append = false;
-            foreach (var file in args)
-            {
-                MpvLoadFile(file, append, pipe);
-                append = true;
-            }
+            mpv.LoadFiles(args);
 
             // activate the window
-            MpvActivate(pipe);
+            mpv.Activate();
 
             // check jump list once all that is done
             var t = Task.Run(SetupJumpList);
