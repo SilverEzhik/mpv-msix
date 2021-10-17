@@ -15,7 +15,7 @@
   <Identity
     Name="519Ezhik.mpvUnofficial"
     Publisher="CN=F7C8DA8A-6CF5-4B76-92AA-65A6A8B43898"
-    Version="0.33.1001.0" />
+    Version="0.33.1002.0" />
 
   <Properties>
     <DisplayName>mpv (Unofficial)</DisplayName>
@@ -205,7 +205,7 @@
             </uap2:SupportedVerbs>
           </uap:FileTypeAssociation>
         </uap:Extension>
-        <uap5:Extension Category="windows.appExecutionAlias" Executable="mpv/mpv-console-launcher.exe" EntryPoint="main">
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="mpv/mpv-console-launcher.exe" EntryPoint="Windows.FullTrustApplication">
           <uap5:AppExecutionAlias uap10:Subsystem="console">
             <uap5:ExecutionAlias Alias="mpv.exe" />
           </uap5:AppExecutionAlias>

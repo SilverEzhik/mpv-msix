@@ -49,7 +49,8 @@ namespace mpv_launcher
 
     class Configuration
     {
-        private static string ConfigPath = Environment.ExpandEnvironmentVariables("%APPDATA%/mpv/mpv-launcher.conf");
+        private static readonly string ConfigDir = Environment.GetEnvironmentVariable("MPV_HOME") ?? Environment.ExpandEnvironmentVariables("%APPDATA%/mpv");
+        private static readonly string ConfigPath = Path.Combine(ConfigDir, "mpv-launcher.conf");
 
         public static SingleInstanceBehaviorEnum? SingleInstanceBehaviorFromString(string str)
         {
