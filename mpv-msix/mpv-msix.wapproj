@@ -62,7 +62,7 @@
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>389AA65FAF9CEDBA57FDC0871C8F81C651F0248F</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>673FBD54F7DE320F82018922ECE18C8F61ACCFB2</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <AppxBundle>Always</AppxBundle>
@@ -168,6 +168,7 @@
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <Content Include="Images\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
+    <None Include="mpv-msix_TemporaryKey.pfx" />
     <Content Include="Square150x150Logo.scale-100.png" />
     <Content Include="Square150x150Logo.scale-200.png" />
     <Content Include="Square150x150Logo.scale-400.png" />

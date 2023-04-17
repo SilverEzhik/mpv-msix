@@ -15,7 +15,7 @@
   <Identity
     Name="519Ezhik.mpvUnofficial"
     Publisher="CN=F7C8DA8A-6CF5-4B76-92AA-65A6A8B43898"
-    Version="0.33.1002.0" />
+    Version="0.35.1001.0" />
 
   <Properties>
     <DisplayName>mpv (Unofficial)</DisplayName>
@@ -197,6 +197,7 @@
               <uap:FileType>.m3u8</uap:FileType>
               <uap:FileType>.pls</uap:FileType>
               <uap:FileType>.cue</uap:FileType>
+              <uap:FileType>.gif</uap:FileType>
             </uap:SupportedFileTypes>
             <uap2:SupportedVerbs>
               <uap3:Verb Id="Open" MultiSelectModel="Player">Play</uap3:Verb>
