@@ -36,12 +36,13 @@ mpv://play?file=https%3A%2F%2Fyoutu.be%2FXCs7FacjHQY&file=https%3A%2F%2Fyoutu.be
 
 mpv-launcher can be configured by creating a configuration file at `%APPDATA%\mpv\mpv-launcher.conf`. This file follows a similar syntax to `mpv.conf`.
 
-Example configuration file:
+Example `mpv-launcher.conf` file:
 ```
 single-instance-behavior=replace
 sort-file-explorer-selection=yes
 raise-existing-window=yes
 ```
+mpv configuration options such as `keep-open=yes` ([full list](https://github.com/mpv-player/mpv/blob/v0.36.0/DOCS/man/options.rst)) should be created in the same directory at `%APPDATA%\mpv\mpv.conf` ([official docs](https://github.com/mpv-player/mpv/blob/v0.36.0/DOCS/man/mpv.rst#files-on-windows)), while the options specific to `mpv-launcher.conf` are as follows:
 
 ## Options
 
